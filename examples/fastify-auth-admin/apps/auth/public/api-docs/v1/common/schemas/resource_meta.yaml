@@ -1,0 +1,85 @@
+Field:
+  type: object
+  properties:
+    code:
+      type: string
+      description: Символьный код поля
+      example: id
+    name:
+      type: string
+      description: Название поля
+      example: ID
+    list:
+      type: boolean
+      description: Доступно ли поле для вывода в таблицу
+    type:
+      type: string
+      description: Тип поля из FieldTypeEnum
+      example: string
+    enum_info:
+      type: object
+      properties:
+        endpoint:
+          type: string
+          description: Эндпоинт по которому доступен список значений. Пример запроса в SearchEnumValuesBody. В ответ вернутся значения как EnumValue
+        values:
+          type: array
+          items:
+            $ref: '#/EnumValue'
+    sort:
+      type: boolean
+      description: Доступно ли поле для сортировки
+    sort_key:
+      type: string
+      description: Ключ, который необходимо передавать для сортировки по данному полю
+      example: id
+    filter:
+      type: string
+      description: Тип фильтра по данному полю из FieldFilterTypeEnum
+      nullable: true
+      example: default
+    filter_range_key_from:
+      type: string
+      description: Если тип фильтра по диапазону - ключ, под которым необходимо передавать значение ОТ
+      example: id_from
+    filter_range_key_to:
+      type: string
+      description:  Если тип фильтра по диапазону - ключ, под которым необходимо передавать значение ДО
+      example: id_to
+    filter_key:
+      type: string
+      description:  Если фильтр обычный - ключ, под которым необходимо передавать значение
+      example: id
+  required:
+    - code
+    - name
+    - list
+    - type
+    - sort
+    - filter
+
+EnumValue:
+  type: object
+  properties:
+    id:
+      type: string
+      description: Идентификатор значения
+    title:
+      type: string
+      description: Человеко-понятное значение
+
+SearchEnumValuesBody:
+  type: object
+  properties:
+    filter:
+      type: object
+      properties:
+        query:
+          type: string
+          description: Текст, вводимый пользователем для фильтрации списка
+        id:
+          type: array
+          items:
+            description: Значения
+          description: Отфильтровать значения по идентификатору
+          example: [1, "uuid"]

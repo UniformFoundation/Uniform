@@ -1,0 +1,182 @@
+EmptyDataResponse:
+  type: object
+  properties:
+    data:
+      type: object
+      nullable: true
+      example: null
+    meta:
+      type: object
+      description: Объект с мета-информацией
+  required:
+      - data
+
+IdObject:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: id
+      example: 1
+
+IdsObject:
+  type: object
+  properties:
+    ids:
+      type: array
+      items:
+        type: integer
+        description: id
+        example: 1
+
+MultipartFileUploadRequest:
+  type: object
+  properties:
+    file:
+      type: string
+      format: binary
+      description: Загружаемый файл
+
+PaginationTypeCursorEnum:
+  type: string
+  description: >
+    * Pagination types:
+    * `cursor` - Пагинация используя cursor
+  enum:
+    - cursor
+  x-enum-varnames:
+    - CURSOR
+
+PaginationTypeOffsetEnum:
+  type: string
+  description: >
+    * Pagination types:
+    * `offset` - Пагинация используя offset
+  enum:
+    - offset
+  x-enum-varnames:
+    - OFFSET
+
+PaginationTypeEnum:
+  type: string
+  description: >
+    Pagination types:
+    * `cursor` - Пагинация используя cursor
+    * `offset` - Пагинация используя offset
+  enum:
+    - cursor
+    - offset
+  x-enum-varnames:
+    - CURSOR
+    - OFFSET
+
+RequestBodySort:
+  type: array
+  example: []
+  items:
+    type: string
+
+RequestBodyInclude:
+  type: array
+  example: []
+  items:
+    type: string
+
+RequestBodyPagination:
+  oneOf:
+    - $ref: '#/RequestBodyCursorPagination'
+    - $ref: '#/RequestBodyOffsetPagination'
+
+RequestBodyCursorPagination:
+  type: object
+  properties:
+    cursor:
+      type: string
+      nullable: true
+      example: null
+    limit:
+      type: integer
+      example: 20
+    type:
+      description: Тип пагинации
+      allOf:
+        - type: string
+        - $ref: '#/PaginationTypeCursorEnum'
+
+RequestBodyOffsetPagination:
+  type: object
+  properties:
+    limit:
+      type: integer
+      example: 20
+    offset:
+      type: integer
+      example: 0
+    type:
+      description: Тип пагинации
+      allOf:
+        - type: string
+        - $ref: '#/PaginationTypeOffsetEnum'
+
+ResponseBodyPagination:
+  oneOf:
+    - $ref: '#/ResponseBodyCursorPagination'
+    - $ref: '#/ResponseBodyOffsetPagination'
+
+ResponseBodyCursorPagination:
+  type: object
+  properties:
+    cursor:
+      type: string
+      example: "eyJpZCI6MTAsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
+      nullable: true
+    limit:
+      type: integer
+      example: 20
+    next_cursor:
+      type: string
+      example: "eyJpZCI6MTAsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
+      nullable: true
+    previous_cursor:
+      type: string
+      example: "eyJpZCI6MTAsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0"
+      nullable: true
+    type:
+      description: Тип пагинации
+      allOf:
+        - type: string
+        - $ref: '#/PaginationTypeCursorEnum'
+
+FileProtected:
+  type: object
+  description: Информация о файле в виде объекта. Для потребителя неважно какие внутри ключи
+
+ResponseBodyOffsetPagination:
+  type: object
+  properties:
+    limit:
+      type: integer
+      example: 20
+    offset:
+      type: integer
+      example: 0
+    total:
+      type: integer
+      example: 253
+    type:
+      description: Тип пагинации
+      allOf:
+        - type: string
+        - $ref: '#/PaginationTypeOffsetEnum'
+
+PreloadFile:
+  type: object
+  properties:
+    preload_file_id:
+      type: integer
+      description: Идентификатор загруженного файла
+      example: 2032
+    url:
+      type: string
+      description: Временный URL файла
+      example: "https://files.ensi.ru/catalog/12/6d/image_001.png"

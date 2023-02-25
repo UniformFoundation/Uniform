@@ -1,5 +1,5 @@
 {
-  "name": "api",
+  "name": "admin-gui-backend",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -8,8 +8,7 @@
     "spectral": "spectral lint ./public/api-docs/**/index.yaml",
     "stoplight": "npx http-server public/api-docs/v1",
     "dev": "ts-node-dev -r dotenv/config -r tsconfig-paths/register --respawn --transpile-only --debounce 400 --watch .env src/index.ts",
-    "gen:dotenv-example": "ts-node ./src/scripts/createDotEnvExample.ts",
-    "generate-server": "node ./node_modules/openapi-generator-server/dist/index.js"
+    "gen:dotenv-example": "ts-node ./src/scripts/createDotEnvExample.ts"
   },
   "keywords": [],
   "author": "",

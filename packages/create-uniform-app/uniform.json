@@ -1,8 +1,0 @@
-{
-    "plugins": [
-        "Scaffold",
-        "GitHooks",
-        "Kafka",
-        "LintFormat"
-    ]
-}

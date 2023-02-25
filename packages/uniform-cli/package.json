@@ -1,10 +1,10 @@
 {
-    "name": "create-uniform-app",
+    "name": "uniform-cli",
     "version": "1.0.0",
-    "description": "Create a Uniform framework app with low-config",
-    "main": "dist/index.js",
+    "description": "Control your uniform project with single CLI",
+    "main": "dist/src/index.js",
     "bin": {
-        "create-uniform-app": "dist/index.js"
+        "uniform": "dist/src/index.js"
     },
     "scripts": {
         "build": "rimraf dist && tsc"
@@ -13,24 +13,17 @@
     "author": "Yurchenko Ilya",
     "license": "ISC",
     "devDependencies": {
-        "@babel/core": "^7.20.12",
-        "@babel/plugin-syntax-jsx": "^7.18.6",
-        "@babel/preset-typescript": "^7.18.6",
         "@trivago/prettier-plugin-sort-imports": "3.2.0",
         "@types/node": "^18.0.0",
         "@types/prompts": "^2.4.2",
         "@types/yargs-parser": "^21.0.0",
         "degit": "^2.8.4",
+        "fastify": "^4.0.0",
         "gitignore-parser": "^0.0.2",
-        "kleur": "^4.1.5",
         "node-fetch-commonjs": "^3.2.4",
         "prettier": "^2.8.3",
         "prompts": "^2.4.2",
         "tiny-glob": "^0.2.9",
-        "yargs-parser": "^21.1.1",
-        "@rollup/plugin-typescript": "^11.0.0",
-        "@types/degit": "^2.8.3",
-        "@types/gitignore-parser": "^0.0.0"
-    },
-    "dependencies": {}
+        "yargs-parser": "^21.1.1"
+    }
 }

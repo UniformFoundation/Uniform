@@ -1,0 +1,15 @@
+services:
+  app:
+    image: $APP_IMAGE
+    networks:
+      - dev
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "${SVC_PATH}/client_max_body_size.conf:/etc/nginx/conf.d/client_max_body_size.conf:ro"
+    ports:
+      - "80:80"
+
+networks:
+  dev:
+    external: true
+    name: $NETWORK

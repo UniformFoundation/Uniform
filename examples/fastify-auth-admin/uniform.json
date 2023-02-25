@@ -1,0 +1,133 @@
+{
+    "name": "uniform-bare-example",
+    "version": "1.0.0",
+    "variables": {
+        "DEFAULT_APPS_ROOT": "${WORKSPACE_PATH}/apps",
+        "APPS_ROOT": "${APPS_ROOT:-$DEFAULT_APPS_ROOT}",
+        "DEFAULT_PACKAGES_ROOT": "${WORKSPACE_PATH}/packages",
+        "PACKAGES_ROOT": "${APPS_ROOT:-$DEFAULT_APPS_ROOT}",
+        "NETWORK": "${NETWORK:-example}",
+        "BASE_DOMAIN": "${BASE_DOMAIN:-example.127.0.0.1.nip.io}",
+        "GROUP_ID": "${GROUP_ID:-1000}",
+        "USER_ID:": "${USER_ID:-1000}",
+        "HOME_PATH": "${WORKSPACE_PATH}/home"
+    },
+    "templates": {
+        "nodejs": {
+            "path": "${WORKSPACE_PATH}/templates/nodejs",
+            "variables": {
+                "APP_IMAGE": "nodejs:latest",
+                "NGINX_IMAGE": "nginx:1.19-alpine"
+            }
+        }
+    },
+    "services": {
+        "proxy": {
+            "path": "${WORKSPACE_PATH}/services/proxy",
+            "variables": {
+                "APP_IMAGE": "jwilder/nginx-proxy:latest"
+            },
+            "tags": [
+                "system"
+            ]
+        },
+        "database": {
+            "path": "${WORKSPACE_PATH}/services/database",
+            "variables": {
+                "APP_IMAGE": "postgis/postgis:13-3.1"
+            },
+            "tags": [
+                "system"
+            ]
+        },
+        "es": {
+            "path": "${WORKSPACE_PATH}/services/es",
+            "variables": {
+                "NGINX_IMAGE": "nginx:1.19-alpine",
+                "IMGPROXY_IMAGE": "darthsim/imgproxy:latest"
+            },
+            "tags": [
+                "system"
+            ],
+            "dependencies": {
+                "proxy": [
+                    "default"
+                ]
+            }
+        },
+        "kafka": {
+            "path": "${WORKSPACE_PATH}/services/kafka",
+            "compose_file": "${SVC_PATH}/kafka.yml",
+            "variables": {
+                "KAFKA_IMAGE": "wurstmeister/kafka",
+                "ZOOKEEPER_IMAGE": "wurstmeister/zookeeper"
+            },
+            "tags": [
+                "system"
+            ]
+        },
+        "kafka-ui": {
+            "path": "${WORKSPACE_PATH}/services/kafka",
+            "compose_file": "${SVC_PATH}/kafka-ui.yml",
+            "variables": {
+                "APP_IMAGE": "provectuslabs/kafka-ui"
+            },
+            "tags": [
+                "system"
+            ],
+            "dependencies": {
+                "proxy": [
+                    "default"
+                ],
+                "kafka": [
+                    "default"
+                ]
+            }
+        },
+        "auth": {
+            "extends": "nodejs",
+            "path": "${APPS_ROOT}/auth",
+            "tags": [
+                "code",
+                "app",
+                "backend"
+            ],
+            "dependencies": {
+                "database": [
+                    "default",
+                    "hook"
+                ],
+                "proxy": [
+                    "default"
+                ]
+            }
+        },
+        "admin-gui-backend": {
+            "extends": "nodejs",
+            "path": "${APPS_ROOT}/admin-gui/admin-gui-backend",
+            "tags": [
+                "code",
+                "app",
+                "backend"
+            ],
+            "dependencies": {
+                "database": [
+                    "default",
+                    "hook"
+                ],
+                "proxy": [
+                    "default"
+                ]
+            }
+        }
+    },
+    "packages": {
+        "auth-client": {
+            "path": "${PACKAGES_PATH}/auth-client",
+            "tags": [
+                "code",
+                "lib"
+            ]
+        }
+    }
+}

@@ -3,3 +3,8 @@ packages:
     - 'apps/*'
     # all packages in subdirs of packages/ and components/
     - 'packages/*'
+    - 'examples/*'
+    - '!**/.tmp/**'
+options:
+  prefer-workspace-packages: true
+  strict-peer-dependencies: false

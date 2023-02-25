@@ -12,6 +12,10 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.11.19",
+    "rollup": "^3.10.0",
+    "@rollup/plugin-commonjs": "^24.0.0",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
     "@trivago/prettier-plugin-sort-imports": "3.2.0",
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
@@ -27,6 +31,7 @@
     "prettier": "2.3.0",
     "rimraf": "^4.1.2",
     "tslib": "^2.5.0",
-    "typescript": "4.9.5"
+    "typescript": "4.9.5",
+    "create-uniform-app": "workspace:^1.0.0"
   }
 }
