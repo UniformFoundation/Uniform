@@ -1,0 +1,32 @@
+{
+  "name": "trading",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier  . --write --ignore-path .prettierignore"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.11.19",
+    "@trivago/prettier-plugin-sort-imports": "3.2.0",
+    "@typescript-eslint/eslint-plugin": "^5.37.0",
+    "@typescript-eslint/parser": "^5.37.0",
+    "eslint": "8",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-mdx": "2.0.4",
+    "eslint-plugin-react": "^7.31.8",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "nx": "^15.6.3",
+    "prettier": "2.3.0",
+    "rimraf": "^4.1.2",
+    "tslib": "^2.5.0",
+    "typescript": "4.9.5"
+  }
+}

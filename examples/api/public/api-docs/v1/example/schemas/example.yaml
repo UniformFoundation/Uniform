@@ -1,0 +1,13 @@
+ExampleResponse:
+  type: object
+  properties:
+    data:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Id of entity
+      required: 
+        - id
+  required:
+    - data

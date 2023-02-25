@@ -1,0 +1,126 @@
+openapi: 3.0.3
+info:
+  title: title
+  version: 1.0.0
+  contact:
+    name: API Support
+    url: https://example.com
+    email: mail@example.com  
+  description: description
+servers:
+  - url: /api/v1
+tags:
+  - name: common
+    description: Апишка
+
+  - name: auth
+    description: Авторизация
+paths:
+  /common/files/download-protected:
+    $ref: './common/paths.yaml#/FilesDownloadProtected'
+
+  /auth/login:
+    $ref: './auth/paths.yaml#/Login'
+  /auth/logout:
+    $ref: './auth/paths.yaml#/Logout'
+  /auth/refresh:
+    $ref: './auth/paths.yaml#/Refresh'
+  /auth/current-user:
+    $ref: './auth/paths.yaml#/CurrentUser'
+
+  /examples/{id}:
+    $ref: './example/paths.yaml#/GetExample'
+components:
+  parameters:
+    QueryInclude:
+      $ref: './common_parameters.yaml#/QueryInclude'
+    PathId:
+      $ref: './common_parameters.yaml#/PathId'
+  schemas:
+    PaginationTypeEnum:
+      $ref: './common_schemas.yaml#/PaginationTypeEnum'
+    PaginationTypeCursorEnum:
+      $ref: './common_schemas.yaml#/PaginationTypeCursorEnum'
+    PaginationTypeOffsetEnum:
+      $ref: './common_schemas.yaml#/PaginationTypeOffsetEnum'
+    FieldTypeEnum:
+      $ref: './common/enums/field_type_enum.yaml'
+    FieldFilterTypeEnum:
+      $ref: './common/enums/field_filter_type_enum.yaml'
+    SearchEnumValuesBody:
+      $ref: './common/schemas/resource_meta.yaml#/SearchEnumValuesBody'
+    EnumValue:
+      $ref: './common/schemas/resource_meta.yaml#/EnumValue'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: './errors.yaml#/ErrorResponse'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: './errors.yaml#/ErrorResponse'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: './errors.yaml#/ErrorResponse'
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: './errors.yaml#/ErrorResponse'
+    ServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: './errors.yaml#/ErrorResponse'
+    DeleteResponse:
+      description: Удаление выполнено
+      content:
+        application/json:
+          schema:
+            $ref: './common_schemas.yaml#/EmptyDataResponse'
+    SuccessEmptyResponse:
+      description: 'Действие успешно выполнено'
+      content:
+        application/json:
+          schema:
+            $ref: './common_schemas.yaml#/EmptyDataResponse'
+    SearchEnumValuesResponse:
+      description: Получение значений перечисления
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              values:
+                type: array
+                items:
+                  $ref: './common/schemas/resource_meta.yaml#/EnumValue'
+    PreloadFileResponse:
+      description: Файл загружен и зарегистрирован
+      content:
+        application/json:
+          schema:
+            $ref: './common_schemas.yaml#/PreloadFile'
+  requestBodies:
+    SearchEnumValuesRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: './common/schemas/resource_meta.yaml#/SearchEnumValuesBody'
+security:
+  - bearerAuth: []

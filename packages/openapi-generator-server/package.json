@@ -1,0 +1,39 @@
+{
+  "name": "openapi-generator-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "bin": {
+    "openapi:generate-server": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^10.1.0",
+    "@openapi-contrib/openapi-schema-to-json-schema": "^3.0.4",
+    "@openapitools/openapi-generator-cli": "^2.5.2",
+    "ajv": "^8.12.0",
+    "ajv-formats": "^2.0.0",
+    "js-yaml": "^4.1.0",
+    "json-schema-resolver": "^2.0.0",
+    "json-schema-to-typescript": "^11.0.3",
+    "lodash.keyby": "^4.6.0",
+    "node-fetch-commonjs": "^3.2.4",
+    "openapi-typescript": "^6.1.0",
+    "prettier": "2.3.0",
+    "yaml": "^2.1.1",
+    "yargs": "^17.6.2",
+    "fastify": "^4.12.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.5",
+    "@types/lodash.keyby": "^4.6.7",
+    "@types/node": "^18.0.0",
+    "@types/yargs": "^17.0.22",
+    "openapi-types": "^12.1.0"
+  }
+}

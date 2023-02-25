@@ -1,0 +1,18 @@
+GetExample:
+  get:
+    operationId: getExampleEntity
+    summary: Получение объекта типа ExampleEntity
+    parameters:
+      - $ref: '../index.yaml#/components/parameters/PathId'
+      - $ref: '../index.yaml#/components/parameters/QueryInclude'
+    responses:
+      "200":
+        description: Успешный ответ
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/example.yaml#/ExampleResponse'
+      "404":
+        $ref: '../index.yaml#/components/responses/NotFound'
+      "500":
+        $ref: '../index.yaml#/components/responses/ServerError'
