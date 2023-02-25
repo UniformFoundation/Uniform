@@ -1,5 +1,5 @@
 {
-  "name": "trading",
+  "name": "uniformframework",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -32,6 +32,6 @@
     "rimraf": "^4.1.2",
     "tslib": "^2.5.0",
     "typescript": "4.9.5",
-    "create-uniform-app": "workspace:^1.0.0"
+    "@uniform-foundation/create-uniform-app": "workspace:^1.0.0"
   }
 }

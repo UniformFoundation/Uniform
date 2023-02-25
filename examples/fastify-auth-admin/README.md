@@ -17,7 +17,18 @@ Services:
 4. proxy - an nginx proxy docker service
 5. es - a content storage and access docker service
 
+To init the microservices, run:
+
+1. `npm i -g @uniform-foundation/cli`
+2. `sh scripts/init.sh`
+
 To start the microservices, run:
 
-`npm i -g @uniform/cli`
-`uniform`
+1. `npx uniform start database`
+2. `sh scripts/create-dbs.sh`
+3. `npx uniform start auth admin-gui-backend`
+
+To stop the microservices, run:
+1. `npx uniform stop auth admin-gui-backend`
+or
+2. `npx uniform restart auth admin-gui-backend`

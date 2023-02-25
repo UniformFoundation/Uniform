@@ -1,10 +1,10 @@
 {
-  "name": "openapi-generator-server",
+  "name": "@uniform-foundation/openapi-generator-server",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "bin": {
-    "openapi:generate-server": "dist/index.js"
+    "uniform-openapi-gen-server": "dist/index.js"
   },
   "scripts": {
     "build": "tsc"

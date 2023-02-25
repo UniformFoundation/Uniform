@@ -1,5 +1,5 @@
 {
-  "name": "fastify-serve-stoplight",
+  "name": "@uniform-foundation/fastify-serve-stoplight",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",

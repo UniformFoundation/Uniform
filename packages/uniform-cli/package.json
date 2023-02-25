@@ -1,10 +1,14 @@
 {
-    "name": "uniform-cli",
+    "name": "@uniform-foundation/cli",
     "version": "1.0.0",
     "description": "Control your uniform project with single CLI",
     "main": "dist/src/index.js",
     "bin": {
         "uniform": "dist/src/index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/UniformFoundation/Uniform/tree/main/packages/uniform-cli"
     },
     "scripts": {
         "build": "rimraf dist && tsc"
