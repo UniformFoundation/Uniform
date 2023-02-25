@@ -1,4 +1,6 @@
 # Uniform
+![uniform logo](https://github.com/UniformFoundation/Uniform/blob/main/logo.svg?raw=true)
+
 Uniform is a next-generation toolset for building microservices in typescript
 
 ## Main desired stack
