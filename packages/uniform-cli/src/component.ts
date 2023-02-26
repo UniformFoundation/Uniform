@@ -1,5 +1,7 @@
+import { bold, green, red } from 'kleur/colors';
 import tty from 'node:tty';
-import { ComponentConfig, getDeps, mergeComponentConfigs } from './componentConfig';
+
+import { ComponentConfig, getDeps, mergeComponentConfigs, resolveDeps } from './componentConfig';
 import { GlobalOptions, execShellInteractive, execShellToString, substVars } from './core';
 import { Workspace } from './workspace';
 
@@ -141,30 +143,30 @@ export const componentIsRunning = async (comp: Component, options: GlobalOptions
     return out !== '';
 };
 
-export const componentStartDeps = async (comp: Component, options: GlobalOptions) => {
-    // TODO: double check this || line
-    const deps = getDeps(comp.config, options.mode || 'default');
-
-    for (const depName of deps) {
-        const depComp = comp.workspace.components.get(depName);
-
-        if (!depComp) {
-            throw new Error(`dependency "${depName}" used by "${comp.name}" is not found`);
-        }
-
-        await componentStart(comp, options);
-    }
-};
-
 export const componentStart = async (comp: Component, options: GlobalOptions) => {
     const running = await componentIsRunning(comp, options);
 
+    console.log('starting component: ', comp.name, 'is it running?', running);
+
     if (!running || options.force) {
-        await componentStartDeps(comp, options);
+        const deps = getDeps(comp.config, options.mode || 'default');
+        const comps = resolveDeps(comp.workspace, deps);
+
+        console.log(red('   deps: ' + comps.map(e => e.name).join(',')));
+
+        for (const comp of comps) {
+            const running = await componentIsRunning(comp, options);
+
+            if (!running || options.force) {
+                await componentExecCompose(comp, ['up', '-d'], options, true);
+            }
+        }
     }
 
     if (!running) {
         return componentExecCompose(comp, ['up', '-d'], options, true);
+    } else {
+        console.log(bold(green(`🚀 Component "${comp.name}" is already running`)));
     }
 };
 
@@ -224,7 +226,7 @@ export const componentExecOptions = async (comp: Component, options: GlobalOptio
     }
 
     command.push('app');
-    command.push(...options.cmd!)
+    command.push(...options.cmd!);
 
     return componentExecCompose(comp, command, options, true);
 };

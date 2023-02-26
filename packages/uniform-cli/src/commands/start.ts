@@ -1,7 +1,7 @@
 import type { Arguments, CommandBuilder } from 'yargs';
 
 import { componentStart } from '../component';
-import { GlobalOptions, Mode, execShellToString, yargsAddGlobalOptions } from '../core';
+import { GlobalOptions, Mode, yargsAddGlobalOptions } from '../core';
 import { createWorkspace, initWorkspace, loadWorkspace } from '../workspace';
 
 export const command: string = 'start [services..]';
@@ -11,7 +11,7 @@ export const desc: string =
 type Options = GlobalOptions & {
     services?: string[];
     force?: boolean;
-    mode?: Mode;
+    mode: Mode;
 };
 
 export const builder: CommandBuilder<Options, Options> = yargs =>
@@ -26,6 +26,7 @@ export const builder: CommandBuilder<Options, Options> = yargs =>
         },
         mode: {
             choices: ['default', 'hook'] as const,
+            default: 'default' as Mode,
         },
     });
 

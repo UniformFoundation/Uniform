@@ -7,6 +7,8 @@ services:
         - BASE_IMAGE=$BASE_IMAGE
         - USER_ID=$USER_ID
         - GROUP_ID=$GROUP_ID
+        - APP_NAME=$APP_NAME
+        - SVC_PATH=$SVC_PATH
     hostname: "$APP_NAME.$BASE_DOMAIN"
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -22,7 +24,7 @@ services:
       - "$HOME_PATH:/tmp/home"
       - "$HOME_PATH/.npm:/.npm"
       - "$HOME_PATH/.config:/.config"
-      - "$PACKAGES_PATH:$PACKAGES_PATH"
+      - "$PACKAGES_ROOT:$PACKAGES_ROOT"
       - "$TPL_PATH/docker/entrypoint:/usr/local/bin/entrypoint"
       - "$WORKSPACE_PATH/services/es/data:/var/data"
     networks:

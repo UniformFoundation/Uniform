@@ -8,8 +8,8 @@
         "PACKAGES_ROOT": "${APPS_ROOT:$DEFAULT_APPS_ROOT}",
         "NETWORK": "${NETWORK:example}",
         "BASE_DOMAIN": "${BASE_DOMAIN:example.127.0.0.1.nip.io}",
-        "GROUP_ID": "${GROUP_ID:1000}",
-        "USER_ID:": "${USER_ID:1000}",
+        "GROUP_ID": "${GROUP_ID:1001}",
+        "USER_ID": "${USER_ID:1001}",
         "HOME_PATH": "${WORKSPACE_PATH}/.uniform"
     },
     "components": {
@@ -18,7 +18,9 @@
             "path": "${WORKSPACE_PATH}/templates/nodejs",
             "variables": {
                 "APP_IMAGE": "nodejs:latest",
-                "NGINX_IMAGE": "nginx:1.19-alpine"
+                "NGINX_IMAGE": "nginx:1.19-alpine",
+                "BASE_IMAGE": "node:16.3.0-alpine",
+                "SVC_PATH": "${SVC_PATH}"
             }
         },
         "proxy": {
@@ -122,7 +124,7 @@
     },
     "packages": {
         "auth-client": {
-            "path": "${PACKAGES_PATH}/auth-client",
+            "path": "${PACKAGES_ROOT}/auth-client",
             "tags": [
                 "code",
                 "lib"
