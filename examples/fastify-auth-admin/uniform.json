@@ -3,25 +3,24 @@
     "version": "1.0.0",
     "variables": {
         "DEFAULT_APPS_ROOT": "${WORKSPACE_PATH}/apps",
-        "APPS_ROOT": "${APPS_ROOT:-$DEFAULT_APPS_ROOT}",
+        "APPS_ROOT": "${APPS_ROOT:$DEFAULT_APPS_ROOT}",
         "DEFAULT_PACKAGES_ROOT": "${WORKSPACE_PATH}/packages",
-        "PACKAGES_ROOT": "${APPS_ROOT:-$DEFAULT_APPS_ROOT}",
-        "NETWORK": "${NETWORK:-example}",
-        "BASE_DOMAIN": "${BASE_DOMAIN:-example.127.0.0.1.nip.io}",
-        "GROUP_ID": "${GROUP_ID:-1000}",
-        "USER_ID:": "${USER_ID:-1000}",
-        "HOME_PATH": "${WORKSPACE_PATH}/home"
+        "PACKAGES_ROOT": "${APPS_ROOT:$DEFAULT_APPS_ROOT}",
+        "NETWORK": "${NETWORK:example}",
+        "BASE_DOMAIN": "${BASE_DOMAIN:example.127.0.0.1.nip.io}",
+        "GROUP_ID": "${GROUP_ID:1000}",
+        "USER_ID:": "${USER_ID:1000}",
+        "HOME_PATH": "${WORKSPACE_PATH}/.uniform"
     },
-    "templates": {
+    "components": {
         "nodejs": {
+            "isTemplate": true,
             "path": "${WORKSPACE_PATH}/templates/nodejs",
             "variables": {
                 "APP_IMAGE": "nodejs:latest",
                 "NGINX_IMAGE": "nginx:1.19-alpine"
             }
-        }
-    },
-    "services": {
+        },
         "proxy": {
             "path": "${WORKSPACE_PATH}/services/proxy",
             "variables": {

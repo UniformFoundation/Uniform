@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [[ $(docker network ls -f name=example -q) ]]; then
+    echo "Warn: already existing network \"example\""
+else
+    docker network create "example"
+fi
+
 chmod -R 777 .uniform/cache
 
 mkdir -p services/database/data
