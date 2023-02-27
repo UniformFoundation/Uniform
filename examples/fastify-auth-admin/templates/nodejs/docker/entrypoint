@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/ash
 
 umask 0000
 
-cd /var/www
+cd /app
 
 if [ -e "container.env" ]; then
     variables=$(sed "s/^#.*//" "container.env")
@@ -11,24 +11,15 @@ if [ -e "container.env" ]; then
     fi
 fi
 
-if [ ! -e /var/www/storage/ensi ] && [ -e /var/data ]; then
-    ln -s /var/data /var/www/storage/ensi
-fi
+# if [ ! -e /var/www/storage/ensi ] && [ -e /var/data ]; then
+#     ln -s /var/data /var/www/storage/ensi
+# fi
 
-if [ ! -L /var/www/public/storage ]; then
-    if [ -e vendor ]; then
-        echo "need to link storage!"
-        # php artisan storage:link
-    fi
-fi
+# if [ ! -L /var/www/public/storage ]; then
+#     if [ -e vendor ]; then
+#         echo "need to link storage!"
+#         # php artisan storage:link
+#     fi
+# fi
 
-SHELL=/bin/bash ./node_modules/.bin/chokidar -d 1000 -t 1000 -s --initial --silent \
-        "src/config" \
-        "src/http" \
-        "prisma" \
-        "src/scripts" \
-        "package.json" \
-        "tsconfig.json" \
-        ".env" \
-        -c "npm dev"
-sleep 3600
+SHELL=/bin/ash /usr/local/bin/npm run dev

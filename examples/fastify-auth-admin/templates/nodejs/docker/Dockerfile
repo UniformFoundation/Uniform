@@ -10,6 +10,7 @@ ARG GROUP_ID
 
 RUN apk add npm git openjdk8-jre-base bash htop vim mc
 
+
 RUN addgroup -g $GROUP_ID developer
 RUN adduser -u $USER_ID -S -D -H -G developer developer
 
@@ -26,10 +27,12 @@ ARG APP_NAME
 ARG PORT
 
 WORKDIR /app
+
+RUN apk add npm
+RUN npm install -g chokidar-cli
  
 COPY --from=installer /app/node_modules ./node_modules
-COPY --from=installer /app/apps/$APP_NAME/dist ./dist
-COPY --from=installer /app/apps/$APP_NAME/package.json ./package.json
-COPY --from=installer /app/packages ./packages
+COPY --from=installer /app/dist ./dist
+COPY --from=installer /app/package.json ./package.json
 
 EXPOSE $PORT

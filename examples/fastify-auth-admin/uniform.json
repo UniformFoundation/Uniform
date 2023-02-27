@@ -87,6 +87,7 @@
         "auth": {
             "extends": "nodejs",
             "path": "${APPS_ROOT}/auth",
+            "repository": "git@github.com:UniformFoundation/Uniform-auth",
             "tags": [
                 "code",
                 "app",
@@ -105,6 +106,7 @@
         "admin-gui-backend": {
             "extends": "nodejs",
             "path": "${APPS_ROOT}/admin-gui/admin-gui-backend",
+            "repository": "git@github.com:UniformFoundation/Uniform-gui-backend",
             "tags": [
                 "code",
                 "app",
