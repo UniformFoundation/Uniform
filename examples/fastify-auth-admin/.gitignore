@@ -1,4 +1,4 @@
 node_modules
 dist
 build
-out-tsc
+apps
