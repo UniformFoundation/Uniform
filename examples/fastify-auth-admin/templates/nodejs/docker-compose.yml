@@ -2,13 +2,13 @@ services:
   app:
     image: $WORKSPACE_NAME/$APP_IMAGE
     build:
-      context: $TPL_PATH/docker
+      context: $SVC_PATH
+      dockerfile: $TPL_PATH/docker/Dockerfile
       args:
         - BASE_IMAGE=$BASE_IMAGE
         - USER_ID=$USER_ID
         - GROUP_ID=$GROUP_ID
         - APP_NAME=$APP_NAME
-        - SVC_PATH=$SVC_PATH
     hostname: "$APP_NAME.$BASE_DOMAIN"
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -16,11 +16,11 @@ services:
       VIRTUAL_HOST: "$APP_NAME.$BASE_DOMAIN"
       VIRTUAL_PORT: "80"
       HOME: /tmp/home
-    working_dir: /var/www
+    working_dir: /app
     entrypoint:
       - "/usr/local/bin/entrypoint"
     volumes:
-      - "$SVC_PATH:/var/www"
+      - "$SVC_PATH:/app"
       - "$HOME_PATH:/tmp/home"
       - "$HOME_PATH/.npm:/.npm"
       - "$HOME_PATH/.config:/.config"
@@ -32,7 +32,7 @@ services:
   nginx:
     image: $NGINX_IMAGE
     volumes:
-      - "$SVC_PATH:/var/www"
+      # - "$SVC_PATH:/var/www"
       - "$TPL_PATH/nginx/default.conf.template:/etc/nginx/conf.d/default.conf"
     network_mode: "service:app"
     depends_on:

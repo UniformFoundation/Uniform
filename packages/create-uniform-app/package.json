@@ -8,8 +8,9 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/UniformFoundation/Uniform/tree/main/packages/create-uniform-app"
-    },
+        "url": "https://github.com/UniformFoundation/Uniform",
+        "directory": "packages/create-uniform-app"
+      },
     "scripts": {
         "build": "rimraf dist && tsc"
     },

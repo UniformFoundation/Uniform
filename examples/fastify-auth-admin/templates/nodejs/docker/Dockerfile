@@ -1,21 +1,21 @@
 ARG BASE_IMAGE
-ARG APP_NAME
-ARG PORT
-ARG SVC_PATH
 
 FROM $BASE_IMAGE as installer
 
-RUN apk add npm git openjdk8-jre-base bash htop vim mc
-
+ARG APP_NAME
+ARG PORT
+ARG COPY_FROM
 ARG USER_ID
 ARG GROUP_ID
+
+RUN apk add npm git openjdk8-jre-base bash htop vim mc
 
 RUN addgroup -g $GROUP_ID developer
 RUN adduser -u $USER_ID -S -D -H -G developer developer
 
 # Set working directory
 WORKDIR /app
-COPY $SVC_PATH .
+COPY . .
 
 # # RUN YARN_CACHE_FOLDER=/root/.yarn yarn --frozen-lockfile
 RUN npm i

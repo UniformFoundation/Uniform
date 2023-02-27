@@ -19,8 +19,7 @@
             "variables": {
                 "APP_IMAGE": "nodejs:latest",
                 "NGINX_IMAGE": "nginx:1.19-alpine",
-                "BASE_IMAGE": "node:16.3.0-alpine",
-                "SVC_PATH": "${SVC_PATH}"
+                "BASE_IMAGE": "node:16.3.0-alpine"
             }
         },
         "proxy": {
