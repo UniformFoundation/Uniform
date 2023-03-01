@@ -17,12 +17,15 @@ export async function generate(options: GeneratorOptions, schema: ControllerSche
     const groupNames = [...schema.routeGroups.keys()];
     await Promise.all(
         groupNames.map(async groupName => {
-            const path = resolve(schema.version, options.outDirectory, groupName);
+            const path = resolve(schema.version, options.outDirectory);
+            const controllersPath = resolve(path, 'controllers', groupName);
+            const groupUcFirst = ucFirst(groupName);
+
             console.log('Creating dirs...', path);
 
-            await mkdir(path, { recursive: true });
+            await mkdir(controllersPath, { recursive: true });
 
-            const typesPath = resolve(path, 'types.ts');
+            const typesPath = resolve(controllersPath, 'types.ts');
 
             const groupInterfaces = interfaces.get(groupName)!;
 
@@ -35,8 +38,6 @@ export async function generate(options: GeneratorOptions, schema: ControllerSche
             `;
 
             const interfaceNames: string[] = [];
-
-            console.log('groupInterfaces', groupInterfaces);
 
             groupInterfaces.forEach(groupInterface => {
                 typesContent += `
@@ -66,28 +67,29 @@ export async function generate(options: GeneratorOptions, schema: ControllerSche
             console.log('Writing types.ts...', typesPath, typesContent.length, 'bytes');
             await writeFile(typesPath, typesContent, { flag: 'w' });
 
-            const routesPath = resolve(path, 'routes.ts');
+            const controllerPath = resolve(controllersPath, `${groupName}.controller.ts`);
             const routeCode = routes.get(groupName)!;
+
+            routeCode.imports.addImport('fastify-decorators', 'Controller');
+
+            const controllerImportsText = routeCode.imports.generate();
 
             const routesContent = format(
                 `
-                /**
-                 * This file was initially auto-generated. Its content may be changed on the next generation.
-                 */
-                import { FastifyInstance, FastifyPluginAsync } from 'fastify';
-                ${routeCode.imports}
+                ${controllerImportsText}
 
-                export const ${ucFirst(groupName)}Routes: FastifyPluginAsync = async (fastify: FastifyInstance) => {
-                    ${routeCode.inFunctionBody}
-                };
+                @Controller({ route: '/${groupName}' })
+                export default class ${groupUcFirst}Controller {
+                    ${routeCode.inClassBody}   
+                }
             `,
                 options.prettierOptions
             );
 
-            console.log('Writing routes.ts...', routesPath, routesContent.length, 'bytes');
-            await writeFile(routesPath, routesContent, { flag: 'w' });
+            console.log('Writing routes.ts...', controllerPath, routesContent.length, 'bytes');
+            await writeFile(controllerPath, routesContent, { flag: 'w' });
 
-            const schemasPath = resolve(path, 'schemas.ts');
+            const schemasPath = resolve(controllersPath, 'schemas.ts');
             const groupSchemas = schemas.get(groupName)!;
 
             const schemasContent = format(
