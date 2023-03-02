@@ -44,7 +44,8 @@ function convertSchema(route: OpenAPIV3.OperationObject) {
         const fileType = 'multipart/form-data';
 
         if (jsonType in route.requestBody.content) {
-            schema.body = route.requestBody.content[jsonType].schema;
+            schema.body = toJsonSchema(route.requestBody.content[jsonType].schema!);
+            // removeExampleField(schema.body);
         } else if (fileType in route.requestBody.content) {
             // TODO: file upload validation support
         }

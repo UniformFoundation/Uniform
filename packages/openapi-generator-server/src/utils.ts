@@ -2,6 +2,12 @@ import { access } from 'fs/promises';
 import { isAbsolute, resolve } from 'path';
 import type { Options } from 'prettier';
 
+export type HTTPMethod = 'POST' | 'GET' | 'PATCH' | 'PUT' | 'DELETE';
+
+export function isHTTPMethod(str: string): str is HTTPMethod {
+    return ['POST', 'GET', 'PATCH', 'PUT', 'DELETE'].includes(str);
+}
+
 export const resolvePath = (absoluteOrRelativePath: string, relativeTo = process.cwd()) => {
     if (isAbsolute(absoluteOrRelativePath)) return absoluteOrRelativePath;
 

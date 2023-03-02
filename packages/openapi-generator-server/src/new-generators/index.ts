@@ -1,17 +1,19 @@
 // import { compile as compileTypescript } from 'json-schema-to-typescript';
-import { mkdir, writeFile } from 'fs/promises';
+import { existsSync } from 'fs';
+import { mkdir, readFile, writeFile } from 'fs/promises';
 import { resolve } from 'path';
 import { format } from 'prettier';
 
 import { ControllerSchema } from '../parse-controller-schema';
+import { transformController } from '../transformer/controller';
 import { GeneratorOptions, ucFirst } from '../utils';
+import { generateControllers } from './controller';
 import { generateInterface } from './interfaces';
-import { generateRoutes } from './route';
 import { generateSchemas } from './schemas';
 
 export async function generate(options: GeneratorOptions, schema: ControllerSchema) {
     const interfaces = await generateInterface(options, schema.routeGroups);
-    const routes = await generateRoutes(options, schema.routeGroups);
+    const controllers = await generateControllers(options, schema.routeGroups);
     const schemas = await generateSchemas(options, schema.routeGroups);
 
     const groupNames = [...schema.routeGroups.keys()];
@@ -68,26 +70,43 @@ export async function generate(options: GeneratorOptions, schema: ControllerSche
             await writeFile(typesPath, typesContent, { flag: 'w' });
 
             const controllerPath = resolve(controllersPath, `${groupName}.controller.ts`);
-            const routeCode = routes.get(groupName)!;
+            const controllerCode = controllers.get(groupName)!;
 
-            routeCode.imports.addImport('fastify-decorators', 'Controller');
+            controllerCode.imports.addImport('fastify-decorators', 'Controller');
 
-            const controllerImportsText = routeCode.imports.generate();
+            const controllerClass = `${groupUcFirst}Controller`;
 
-            const routesContent = format(
-                `
-                ${controllerImportsText}
+            if (existsSync(controllerPath)) {
+                console.log('Controller already exists! Analysing and rewriting...');
+                const oldControllerCode = await readFile(controllerPath, 'utf-8');
+                const newControllerCode = format(
+                    transformController(oldControllerCode, {
+                        className: controllerClass,
+                        imports: controllerCode.imports.asRecord(),
+                        methods: controllerCode.methods,
+                    }),
+                    options.prettierOptions
+                );
 
-                @Controller({ route: '/${groupName}' })
-                export default class ${groupUcFirst}Controller {
-                    ${routeCode.inClassBody}   
-                }
-            `,
-                options.prettierOptions
-            );
+                console.log('Writing controller...', controllerPath, newControllerCode.length, 'bytes');
+                await writeFile(controllerPath, newControllerCode, { flag: 'w' });
+            } else {
+                const controllerImportsText = controllerCode.imports.generate();
 
-            console.log('Writing routes.ts...', controllerPath, routesContent.length, 'bytes');
-            await writeFile(controllerPath, routesContent, { flag: 'w' });
+                const controllerContent = format(
+                    `
+                    ${controllerImportsText}
+
+                    @Controller({ route: '/${groupName}' })
+                    export default class ${groupUcFirst}Controller {
+                        ${controllerCode.inClassBody}   
+                    }
+                `,
+                    options.prettierOptions
+                );
+                console.log('Writing controller...', controllerPath, controllerContent.length, 'bytes');
+                await writeFile(controllerPath, controllerContent, { flag: 'w' });
+            }
 
             const schemasPath = resolve(controllersPath, 'schemas.ts');
             const groupSchemas = schemas.get(groupName)!;

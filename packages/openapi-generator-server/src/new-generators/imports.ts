@@ -4,6 +4,14 @@ type Field = string;
 export class ImportsGenerator {
     private map = new Map<From, Field[]>;
 
+    asMap() {
+        return this.map;
+    }
+
+    asRecord() {
+        return Object.fromEntries(this.map.entries()) as Record<From, Field[]>
+    }
+
     addImport(from: From, field: Field){
         if (!this.map.has(from)) this.map.set(from, [])
 
