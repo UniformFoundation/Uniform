@@ -1,6 +1,6 @@
 {
     "name": "@uniform-foundation/cli",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Control your uniform project with single CLI",
     "main": "dist/src/index.js",
     "bin": {

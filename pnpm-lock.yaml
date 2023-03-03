@@ -11,8 +11,8 @@ importers:
       '@types/node': ^18.11.19
       '@typescript-eslint/eslint-plugin': ^5.37.0
       '@typescript-eslint/parser': ^5.37.0
-      '@uniform-foundation/cli': workspace:^1.0.0
-      '@uniform-foundation/create-uniform-app': workspace:^1.0.0
+      '@uniform-foundation/cli': workspace:^1.0.1
+      '@uniform-foundation/create-uniform-app': workspace:^1.0.1
       eslint: '8'
       eslint-config-airbnb: ^19.0.4
       eslint-config-prettier: ^8.5.0
