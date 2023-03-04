@@ -1,6 +1,6 @@
 {
     "name": "@uniform-foundation/cli",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Control your uniform project with single CLI",
     "repository": {
         "type": "git",
