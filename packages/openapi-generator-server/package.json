@@ -1,13 +1,12 @@
 {
   "name": "@uniform-foundation/openapi-generator-server",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "dist/index.js",
-  "bin": {
-    "uniform-openapi-gen-server": "dist/index.js"
-  },
+  "bin": "dist/index.js",
   "scripts": {
-    "build": "tsc"
+    "build": "rimraf dist && tsc && node ./scripts/addHeaders.js",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",

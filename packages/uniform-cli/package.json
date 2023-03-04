@@ -1,20 +1,17 @@
 {
     "name": "@uniform-foundation/cli",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "description": "Control your uniform project with single CLI",
-    "main": "dist/src/index.js",
-    "bin": {
-        "uniform": "dist/src/index.js"
-    },
     "repository": {
         "type": "git",
         "url": "https://github.com/UniformFoundation/Uniform",
         "directory": "packages/uniform-cli"
-      },
+    },
+    "bin": "dist/src/index.js",
     "scripts": {
-        "build": "rimraf dist && tsc",
-        "dev": "ts-node src/index.ts",
-        "cli": "node dist/src/index.js"
+        "build": "rimraf dist && tsc && node ./scripts/addHeaders.js",
+        "prepublishOnly": "npm run build",
+        "dev": "ts-node src/index.ts"
     },
     "keywords": [],
     "author": "Yurchenko Ilya",
@@ -25,7 +22,11 @@
         "@types/node": "^18.0.0",
         "@types/prompts": "^2.4.2",
         "@types/yargs": "^17.0.22",
-        "@types/yargs-parser": "^21.0.0",
+        "@types/yargs-parser": "^21.0.0"
+    },
+    "dependencies": {
+        "js-yaml": "^4.1.0",
+        "yargs": "^17.6.2",
         "degit": "^2.8.4",
         "fastify": "^4.0.0",
         "gitignore-parser": "^0.0.2",
@@ -35,9 +36,5 @@
         "prompts": "^2.4.2",
         "tiny-glob": "^0.2.9",
         "yargs-parser": "^21.1.1"
-    },
-    "dependencies": {
-        "js-yaml": "^4.1.0",
-        "yargs": "^17.6.2"
     }
 }

@@ -1,18 +1,17 @@
 {
     "name": "@uniform-foundation/create-uniform-app",
-    "version": "1.0.1",
+    "version": "1.0.5",
     "description": "Create a Uniform framework app with low-config",
     "main": "dist/index.js",
-    "bin": {
-        "create-uniform-app": "dist/index.js"
-    },
+    "bin": "dist/index.js",
     "repository": {
         "type": "git",
         "url": "https://github.com/UniformFoundation/Uniform",
         "directory": "packages/create-uniform-app"
-      },
+    },
     "scripts": {
-        "build": "rimraf dist && tsc"
+        "build": "rimraf dist && tsc && node ./scripts/addHeaders.js",
+        "prepublishOnly": "npm run build"
     },
     "keywords": [],
     "author": "Yurchenko Ilya",
@@ -25,17 +24,18 @@
         "@types/node": "^18.0.0",
         "@types/prompts": "^2.4.2",
         "@types/yargs-parser": "^21.0.0",
-        "degit": "^2.8.4",
-        "gitignore-parser": "^0.0.2",
+        "@rollup/plugin-typescript": "^11.0.0",
+        "@types/degit": "^2.8.3",
+        "@types/gitignore-parser": "^0.0.0"
+    },
+    "dependencies": {
         "kleur": "^4.1.5",
         "node-fetch-commonjs": "^3.2.4",
         "prettier": "^2.8.3",
         "prompts": "^2.4.2",
         "tiny-glob": "^0.2.9",
         "yargs-parser": "^21.1.1",
-        "@rollup/plugin-typescript": "^11.0.0",
-        "@types/degit": "^2.8.3",
-        "@types/gitignore-parser": "^0.0.0"
-    },
-    "dependencies": {}
+        "degit": "^2.8.4",
+        "gitignore-parser": "^0.0.2"
+    }
 }

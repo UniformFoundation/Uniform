@@ -7,6 +7,7 @@ importers:
       '@rollup/plugin-commonjs': ^24.0.0
       '@rollup/plugin-json': ^6.0.0
       '@rollup/plugin-node-resolve': ^13.3.0
+      '@rollup/plugin-typescript': ^11.0.0
       '@trivago/prettier-plugin-sort-imports': 3.2.0
       '@types/node': ^18.11.19
       '@typescript-eslint/eslint-plugin': ^5.37.0
@@ -31,6 +32,7 @@ importers:
       '@rollup/plugin-commonjs': 24.0.1_rollup@3.17.2
       '@rollup/plugin-json': 6.0.0_rollup@3.17.2
       '@rollup/plugin-node-resolve': 13.3.0_rollup@3.17.2
+      '@rollup/plugin-typescript': 11.0.0_xfpw33j3x77vb3zt44uxqu5fey
       '@trivago/prettier-plugin-sort-imports': 3.2.0_prettier@2.3.0
       '@types/node': 18.11.19
       '@typescript-eslint/eslint-plugin': 5.50.0_cj4zy4qs6ckqvxaq44plyugkh4
@@ -1035,6 +1037,26 @@ packages:
     dependencies:
       '@rollup/pluginutils': 5.0.2
       resolve: 1.22.1
+    dev: true
+
+  /@rollup/plugin-typescript/11.0.0_xfpw33j3x77vb3zt44uxqu5fey:
+    resolution: {integrity: sha512-goPyCWBiimk1iJgSTgsehFD5OOFHiAknrRJjqFCudcW8JtWiBlK284Xnn4flqMqg6YAjVG/EE+3aVzrL5qNSzQ==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^2.14.0||^3.0.0
+      tslib: '*'
+      typescript: '>=3.7.0'
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+      tslib:
+        optional: true
+    dependencies:
+      '@rollup/pluginutils': 5.0.2_rollup@3.17.2
+      resolve: 1.22.1
+      rollup: 3.17.2
+      tslib: 2.5.0
+      typescript: 4.9.5
     dev: true
 
   /@rollup/pluginutils/3.1.0_rollup@3.17.2:
