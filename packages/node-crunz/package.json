@@ -1,10 +1,11 @@
 {
   "name": "@uniform-foundation/node-crunz",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Node js port of a famous PHP package crunz",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc"
+    "build": "rimraf dist && tsc",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",

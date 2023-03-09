@@ -1,4 +1,4 @@
-import EveryTime from './EveryTime';
+import EveryTime, { TimeInterval } from './EveryTime';
 import Helpers, { Day } from './helpers';
 import { CronTuple } from './types';
 
@@ -31,9 +31,13 @@ class Task {
 }
 
 class Builder {
-    private cron = ['0', '0', '*', '*', '*'] as CronTuple;
+    private cron = ['*', '*', '*', '*', '*'] as CronTuple;
     private runsAt: Date | null = null;
     private task: Task;
+
+    private setCron(cron: CronTuple) {
+        this.cron = cron;
+    }
 
     constructor(task: Task) {
         this.task = task;
@@ -43,15 +47,15 @@ class Builder {
         if (this.runsAt)
             return {
                 name: this.task.getName(),
+                runsAt: this.runsAt,
                 execute: this.task.getExecutor(),
             };
-    }
 
-    private replaceCron(cron: string) {
-        const split = cron.split(' ');
-        if (assertValidCron(split)) {
-            this.cron = split;
-        }
+        return {
+            name: this.task.getName(),
+            cron: this.cron.join(' '),
+            execute: this.task.getExecutor(),
+        };
     }
 
     at(hhMmStr: string) {
@@ -59,14 +63,31 @@ class Builder {
 
         this.cron[0] = hh;
         this.cron[1] = mm;
+
+        this.setCron(this.cron);
+        return this;
+    }
+
+    atHour(hh: string) {
+        this.cron[0] = hh;
+        this.setCron(this.cron);
+        return this;
+    }
+
+    atMinute(hh: string) {
+        this.cron[1] = hh;
+        this.setCron(this.cron);
+        return this;
     }
 
     onceAt(date: Date | number | string) {
         this.runsAt = new Date(date);
 
         return {
+            // prevent from doing anything further.
             build: () => ({
                 name: this.task.getName(),
+                runsAt: this.runsAt,
                 execute: this.task.getExecutor(),
             }),
         };
@@ -76,12 +97,16 @@ class Builder {
         this.cron[2] = '1';
         this.cron[3] = '*';
 
+        this.setCron(this.cron);
+
         return this;
     }
 
     daily(): Builder {
         this.cron[2] = '*';
         this.cron[3] = '*';
+
+        this.setCron(this.cron);
 
         return this;
     }
@@ -94,6 +119,8 @@ class Builder {
         const intDays = Helpers.daysToIntegers(days);
 
         this.cron[4] = intDays.join(',');
+        this.setCron(this.cron);
+
         return this;
     }
 
@@ -103,15 +130,43 @@ class Builder {
     everyMinute(): Builder {
         this.cron[0] = '*';
         this.cron[1] = '*';
+        this.setCron(this.cron);
+
         return this;
     }
 
     everyHour() {
-        return this.everyHourAt(0);
+        this.cron[1] = '*';
+        this.setCron(this.cron);
+        return this;
+    }
+
+    every(value: TimeInterval, type: 'days' | 'hours' | 'minutes') {
+        const every = new EveryTime(value, { between: false });
+
+        const newCron = every[type](this.cron.join(' ')).split(' ');
+        if (assertValidCron(newCron)) {
+            this.setCron(newCron);
+        }
+
+        return this;
+    }
+
+    betweenEvery(value: TimeInterval, type: 'days' | 'hours' | 'minutes') {
+        const every = new EveryTime(value, { between: true });
+
+        const newCron = every[type](this.cron.join(' ')).split(' ');
+        if (assertValidCron(newCron)) {
+            this.setCron(newCron);
+        }
+
+        return this;
     }
 
     everyHourAt(minuteOfTheHour: number): Builder {
         this.cron[0] = `${minuteOfTheHour}`;
+        this.cron[1] = '*';
+        this.setCron(this.cron);
         return this;
     }
 
@@ -121,6 +176,7 @@ class Builder {
 
         Helpers.validateStartToEndDay(startDay, endDay);
         this.cron[4] = `${startDay}-${endDay}`;
+        this.setCron(this.cron);
 
         return this;
     }
@@ -146,17 +202,6 @@ class Builder {
         minuteOfTheHour: number = 0
     ): string {
         return `${minuteOfTheHour} ${hourOfTheDay} ${dayOfTheMonth} ${monthOfTheYear} *`;
-    }
-
-    /**
-     * Between Time Frames
-     * @param start - Start
-     * @param end - End
-     */
-    static between(start: number, end: number) {
-        return new EveryTime([start, end], {
-            between: true,
-        });
     }
 }
 

@@ -1,6 +1,8 @@
 import { parseExpression } from 'cron-parser';
-import { isAbsolute, join, resolve } from 'path';
+import { mkdir, readFile, writeFile } from 'fs/promises';
+import { dirname, isAbsolute, join, resolve } from 'path';
 import glob from 'tiny-glob';
+import { transpileModule } from 'typescript';
 
 type Neverize<T> = {
     [key in keyof T]?: never;
@@ -18,7 +20,7 @@ export interface OneOffTaskParams {
 }
 
 export type Task = OneOf<PeriodicTaskParams, OneOffTaskParams> & {
-    name?: string;
+    name: string;
     path?: string;
     execute(): Promise<void>;
 };
@@ -26,6 +28,7 @@ export type Task = OneOf<PeriodicTaskParams, OneOffTaskParams> & {
 export interface GlobOptions {
     folder: string;
     pattern: string;
+    transpiledFolder: string;
 }
 
 export interface ArrayOptions {
@@ -36,7 +39,7 @@ interface EventListeners {
     onTaskComplete?: (task: Task) => void | Promise<void>;
 }
 
-async function loadTasks(folder: string, pattern: string): Promise<Task[]> {
+async function loadTasks(folder: string, transpiledFolder: string, pattern: string): Promise<Task[]> {
     if (!isAbsolute(folder)) throw new Error('folder must be an absolute path');
 
     const files = await glob(pattern, { cwd: folder });
@@ -45,7 +48,26 @@ async function loadTasks(folder: string, pattern: string): Promise<Task[]> {
 
     await Promise.all(
         files.map(async file => {
-            const module = require(join(folder, file).replace(/\\/g, '/'));
+            const modulePath = join(folder, file).replace(/\\/g, '/');
+            const isTypescript = modulePath.endsWith('.ts');
+            let module: any;
+
+            if (isTypescript) {
+                // TODO: add caching with md5 of source.
+                const content = await readFile(modulePath, 'utf-8');
+                const transpiledPath = join(transpiledFolder, file.replace('.ts', '-transpiled.js')).replace(
+                    /\\/g,
+                    '/'
+                );
+                const transpiledCode = transpileModule(content, {}).outputText;
+
+                await mkdir(dirname(transpiledPath), { recursive: true });
+                await writeFile(transpiledPath, transpiledCode);
+
+                module = require(transpiledPath);
+            } else {
+                module = require(modulePath);
+            }
 
             const isValid = 'default' in module && typeof module.default === 'object';
 
@@ -101,8 +123,16 @@ function taskToString(task: Task): string {
 }
 
 export async function createTaskRunner<A extends GlobOptions | ArrayOptions>(options: CronRunnerOptions<A>) {
-    const tasks = options.tasks || (await loadTasks(options.folder, options.pattern));
+    const tasks = options.tasks || (await loadTasks(options.folder, options.transpiledFolder, options.pattern));
     const tickTime = options.tickTime || 1000;
+
+    const taskNames = new Set<string>();
+
+    for (const task of tasks) {
+        if (taskNames.has(task.name)) throw new Error(`Task "${task.name}" is defined twice, this is not allowed.`);
+
+        taskNames.add(task.name);
+    }
 
     const tick = () => {
         tasks.forEach(task => {
@@ -130,5 +160,20 @@ export async function createTaskRunner<A extends GlobOptions | ArrayOptions>(opt
     const tid = setInterval(tick, tickTime);
     const stop = () => clearInterval(tid);
 
-    return { tid, stop };
+    const appendTasks = (tasks: Task[]) => {
+        let appendedAmount = 0;
+        for (const newTask of tasks) {
+            if (taskNames.has(newTask.name)) {
+                console.info('Skipping', newTask.name, 'as it already exists');
+                continue;
+            }
+
+            tasks.push(newTask);
+            appendedAmount++;
+        }
+
+        console.info('Appended', appendedAmount, 'new tasks!');
+    };
+
+    return { tid, stop, appendTasks };
 }

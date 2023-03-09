@@ -1,6 +1,6 @@
-import Helpers from "./helpers";
+import Helpers from './helpers';
 
-type TimeInterval = number | "even" | "uneven" | number[];
+export type TimeInterval = number | 'even' | 'uneven' | number[];
 type EveryTimeConfig = {
     between?: boolean;
 };
@@ -18,7 +18,7 @@ class EveryTime {
      * @param {{}} config
      */
     constructor(every: TimeInterval, config: EveryTimeConfig = {}) {
-        if (every === "even") every = 2;
+        if (every === 'even') every = 2;
         this.interval = every;
 
         this.config = Object.assign(this.config, config);
@@ -28,62 +28,53 @@ class EveryTime {
     /**
      * Every nth Minute
      */
-    minutes(): string {
-        if (this.config["between"] && Array.isArray(this.interval)) {
-            this.config["between"] = false;
-            return Helpers.spliceIntoPosition(0, this.interval.join("-"), Helpers.minute());
+    minutes(cron = Helpers.minute()): string {
+        if (this.config['between'] && Array.isArray(this.interval)) {
+            this.config['between'] = false;
+            return Helpers.spliceIntoPosition(0, this.interval.join('-'), cron);
         }
 
-        if (typeof this.interval === "number" && this.interval > 1) {
-            return Helpers.spliceIntoPosition(0, "*/" + this.interval);
-        } else if (this.interval === "uneven") {
-            return Helpers.spliceIntoPosition(0, "1-59/2");
+        if (typeof this.interval === 'number' && this.interval > 1) {
+            return Helpers.spliceIntoPosition(0, '*/' + this.interval, cron);
+        } else if (this.interval === 'uneven') {
+            return Helpers.spliceIntoPosition(0, '1-59/2', cron);
         }
 
-        return Helpers.minute();
+        return cron;
     }
 
     /**
      * Every nth Hour
      */
-    hours(): string {
-        const hour = Helpers.hour();
-
-        if (this.config["between"] && Array.isArray(this.interval)) {
-            this.config["between"] = false;
-            return Helpers.spliceIntoPosition(1, this.interval.join("-"), hour);
+    hours(cron = Helpers.hour()): string {
+        if (this.config['between'] && Array.isArray(this.interval)) {
+            this.config['between'] = false;
+            return Helpers.spliceIntoPosition(1, this.interval.join('-'), cron);
         }
 
-        if (typeof this.interval === "number" && this.interval > 1) {
-            return Helpers.spliceIntoPosition(1, "*/" + this.interval, hour);
-        } else if (this.interval === "uneven") {
-            return Helpers.spliceIntoPosition(1, "1-23/2", hour);
+        if (typeof this.interval === 'number' && this.interval > 1) {
+            return Helpers.spliceIntoPosition(1, '*/' + this.interval, cron);
+        } else if (this.interval === 'uneven') {
+            return Helpers.spliceIntoPosition(1, '1-23/2', cron);
         }
 
-        return hour;
+        return cron;
     }
 
-    /**
-     * Every nth Days after
-     * @param hoursOfDay
-     * @param $minutesOfDay
-     */
-    days(hoursOfDay = 0, $minutesOfDay = 0): string {
-        const day = Helpers.day(hoursOfDay, $minutesOfDay);
-
-        if (this.config["between"] && Array.isArray(this.interval)) {
-            this.config["between"] = false;
-            return Helpers.spliceIntoPosition(2, this.interval.join("-"), day);
+    days(cron = Helpers.day(0, 0)): string {
+        if (this.config['between'] && Array.isArray(this.interval)) {
+            this.config['between'] = false;
+            return Helpers.spliceIntoPosition(2, this.interval.join('-'), cron);
         }
 
-        if (typeof this.interval === "number" && this.interval > 1) {
-            return Helpers.spliceIntoPosition(2, "*/" + this.interval, day);
-        } else if (this.interval === "uneven") {
-            return Helpers.spliceIntoPosition(2, "1-31/2", day);
+        if (typeof this.interval === 'number' && this.interval > 1) {
+            return Helpers.spliceIntoPosition(2, '*/' + this.interval, cron);
+        } else if (this.interval === 'uneven') {
+            return Helpers.spliceIntoPosition(2, '1-31/2', cron);
         }
 
-        return day;
+        return cron;
     }
 }
 
-export = EveryTime;
+export default EveryTime;
