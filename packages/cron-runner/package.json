@@ -1,0 +1,24 @@
+{
+  "name": "@uniform-foundation/cron-runner",
+  "version": "1.0.0",
+  "description": "Single function that runs all your cron tasks",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UniformFoundation/Uniform",
+    "directory": "packages/cron-runner"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cron-parser": "^4.6.0",
+    "tiny-glob": "^0.2.9"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0"
+  }
+}
