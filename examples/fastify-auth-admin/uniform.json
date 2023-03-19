@@ -8,8 +8,8 @@
         "PACKAGES_ROOT": "${APPS_ROOT:$DEFAULT_APPS_ROOT}",
         "NETWORK": "${NETWORK:example}",
         "BASE_DOMAIN": "${BASE_DOMAIN:example.127.0.0.1.nip.io}",
-        "GROUP_ID": "${GROUP_ID:1001}",
-        "USER_ID": "${USER_ID:1001}",
+        "GROUP_ID": "${GROUP_ID:1000}",
+        "USER_ID": "${USER_ID:1000}",
         "HOME_PATH": "${WORKSPACE_PATH}/.uniform"
     },
     "components": {

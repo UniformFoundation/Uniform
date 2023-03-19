@@ -22,4 +22,4 @@ fi
 #     fi
 # fi
 
-SHELL=/bin/ash /usr/local/bin/npm run dev
+SHELL=/bin/ash /usr/local/bin/npm run docker-dev
