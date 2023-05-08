@@ -41,7 +41,7 @@ export const mergeComponentConfigs = (cc: ComponentConfig, cc2: ComponentConfig)
         if (cc2[key]) (result as any)[key] = cc2[key];
     }
 
-    for (const [k, v] of result.variables) {
+    for (const [k, v] of cc2.variables) {
         result.variables.set(k, v);
     }
 
