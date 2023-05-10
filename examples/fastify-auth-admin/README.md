@@ -17,18 +17,19 @@ Services:
 4. proxy - an nginx proxy docker service
 5. es - a content storage and access docker service
 
-To init the microservices, run:
+To init the microservices:
 
-1. `npm i -g @uniform-foundation/cli`
-2. `sh scripts/init.sh`
+1. Install `uniform-cli` [from releases](https://github.com/UniformFoundation/Uniform/releases/tag/v1.0.0)
+2. Add the project using `uniform-cli project add fastify-auth-admin C:/full/path/to/folder`
+3. Run `sh scripts/init.sh`
 
 To start the microservices, run:
-
-1. `npx uniform start database`
+1. `uniform-cli start database`
 2. `sh scripts/create-dbs.sh`
-3. `npx uniform start auth admin-gui-backend`
+3. `uniform-cli start auth admin-gui-backend`
 
 To stop the microservices, run:
-1. `npx uniform stop auth admin-gui-backend`
-or
-2. `npx uniform restart auth admin-gui-backend`
+> `uniform-cli stop auth admin-gui-backend`
+
+To get a list of statuses of the microservices, run:
+> `uniform-cli ps`
