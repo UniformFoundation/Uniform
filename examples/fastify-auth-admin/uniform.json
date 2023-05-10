@@ -5,7 +5,7 @@
         "DEFAULT_APPS_ROOT": "${WORKSPACE_PATH}/apps",
         "APPS_ROOT": "${APPS_ROOT:$DEFAULT_APPS_ROOT}",
         "DEFAULT_PACKAGES_ROOT": "${WORKSPACE_PATH}/packages",
-        "PACKAGES_ROOT": "${APPS_ROOT:$DEFAULT_APPS_ROOT}",
+        "PACKAGES_ROOT": "${APPS_ROOT:$DEFAULT_PACKAGES_ROOT}",
         "NETWORK": "${NETWORK:example}",
         "BASE_DOMAIN": "${BASE_DOMAIN:example.127.0.0.1.nip.io}",
         "GROUP_ID": "${GROUP_ID:1001}",
