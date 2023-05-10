@@ -1,6 +1,9 @@
 ARG BASE_IMAGE
+ARG TPL_PATH
 
 FROM $BASE_IMAGE as installer
+
+RUN chmod +x $TPL_PATH/docker/entrypoint
 
 ARG APP_NAME
 ARG PORT

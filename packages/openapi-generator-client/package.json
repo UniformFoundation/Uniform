@@ -1,0 +1,49 @@
+{
+  "name": "@uniform-foundation/openapi-generator-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "bin": "dist/index.js",
+  "private": false,
+  "scripts": {
+    "build": "rimraf dist && tsc && node ./scripts/addHeaders.js",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UniformFoundation/Uniform",
+    "directory": "packages/openapi-generator-server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^10.1.0",
+    "@openapi-contrib/openapi-schema-to-json-schema": "^4.0.4",
+    "@openapitools/openapi-generator-cli": "^2.5.2",
+    "ajv": "^8.12.0",
+    "ajv-formats": "^2.0.0",
+    "case": "^1.6.3",
+    "code-block-writer": "^12.0.0",
+    "fastify": "^4.12.0",
+    "js-yaml": "^4.1.0",
+    "json-schema-resolver": "^2.0.0",
+    "json-schema-to-typescript": "^12.0.0",
+    "lodash.keyby": "^4.6.0",
+    "node-fetch-commonjs": "^3.2.4",
+    "openapi-typescript": "^6.1.0",
+    "prettier": "2.3.0",
+    "ts-morph": "^18.0.0",
+    "yaml": "^2.1.1",
+    "yargs": "^17.6.2"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.5",
+    "@types/lodash.keyby": "^4.6.7",
+    "@types/node": "^18.0.0",
+    "@types/yargs": "^17.0.22",
+    "openapi-types": "^12.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}

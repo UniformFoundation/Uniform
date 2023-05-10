@@ -10,6 +10,7 @@ services:
         - GROUP_ID=$GROUP_ID
         - APP_NAME=$APP_NAME
         - PORT=3000
+        - TPL_PATH=$TPL_PATH
     hostname: "$APP_NAME.$BASE_DOMAIN"
     extra_hosts:
       - "host.docker.internal:host-gateway"
