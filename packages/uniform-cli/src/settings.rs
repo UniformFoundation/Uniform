@@ -120,6 +120,7 @@ fn get_home_dir() -> Option<PathBuf> {
 
     #[cfg(not(any(target_os = "windows", target_os = "unix")))]
     {
-        PathBuf::from("./")
+        std::env::var_os("HOME").map(PathBuf::from)
+        // Some(PathBuf::from("./"))
     }
 }

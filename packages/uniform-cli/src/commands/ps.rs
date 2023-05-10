@@ -1,5 +1,7 @@
 use clap::{Args, Parser, Subcommand};
 use colored::Colorize;
+use futures::{future::ok, stream::FuturesUnordered};
+use futures::{FutureExt, StreamExt};
 use std::{error::Error, path::PathBuf};
 
 use prettytable::{
@@ -37,11 +39,13 @@ impl ExecuteTrait for PsCommand {
         table.set_format(*format::consts::FORMAT_NO_LINESEP_WITH_TITLE);
 
         let mut rt = Runtime::new()?;
+        let mut tasks = FuturesUnordered::new();
 
-        let tasks = ws.components.iter().map(|(k, v)| {
+        for (k, v) in ws.components.iter() {
             let ws = ws.clone();
             let global_options = global_options.clone();
-            async move {
+
+            let task = async move {
                 let comp = ws.find_executable_component(k);
 
                 match comp {
@@ -53,17 +57,20 @@ impl ExecuteTrait for PsCommand {
                                 let status = if id.is_empty() { "Exited" } else { "Running" };
                                 let short_id = if id.is_empty() { "" } else { &id[..12] };
 
-                                Ok::<Row, Box<dyn Error + Send + Sync>>(row![k, status, short_id])
+                                Ok(row![k, status, short_id])
                             }
                             Err(_) => Ok(row![]),
                         }
                     }
                     None => Ok(row![]),
                 }
-            }
-        });
+            };
 
-        let results = rt.block_on(async { futures::future::join_all(tasks).await });
+            tasks.push(task);
+        }
+
+        let results: Vec<Result<Row, Box<dyn Error + Send + Sync>>> =
+            rt.block_on(async { tasks.collect().await });
 
         for result in results {
             match result {
